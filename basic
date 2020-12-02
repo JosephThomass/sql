@@ -1,0 +1,255 @@
+CREATE TABLE acct_details(ATM_No varchar(20),acc_hldr varchar(20),valid_from date,expiry_date date);
+INSERT INTO acct_details values('4375-0107-24150-1578','James Mathew','05-aug-10','05-aug-22');
+
+INSERT INTO acct_details values('3241-1217-2416-1670','THOMAS VARGHESE','02-sep-12','02-sep-24');
+
+INSERT INTO acct_details values('4352-2327-4717-1773','TIJO SAMUEL','21-dec-07','21-dec-19');
+INSERT INTO acct_details values('5532-3435-5316-1876','ALICE THOMAS','17-jan-13','17-jan-25');
+INSERT INTO acct_details values('3652-4543-6414-1975','NEVIN KOSHY','19-feb-09','19-feb-21');
+INSERT INTO acct_details values('8324-5657-7018-1073','NIRMAL GEORGE','16-may-11','16-may-23');
+INSERT INTO acct_details values('4205-6760-4412-1176','SAMPATH SIMON','11-aug-08','11-aug-20');
+INSERT INTO acct_details values('0083-7873-0214-1274','BIBIN TOM','29-nov-06','29-nov-18');
+INSERT INTO acct_details values('3347-8987-2410-1372','BINCY SAMUEL','20-oct-05','20-oct-17');
+INSERT INTO acct_details values('1629-9107-4412-1472','GRACE ALEX','08-aug-08','08-aug-20');
+select * from acct_details;
+/*
+4375-0107-24150-1578|James Mathew|05-aug-10|05-aug-22                           
+3241-1217-2416-1670|THOMAS VARGHESE|02-sep-12|02-sep-24                         
+4352-2327-4717-1773|TIJO SAMUEL|21-dec-07|21-dec-19                             
+5532-3435-5316-1876|ALICE THOMAS|17-jan-13|17-jan-25                            
+3652-4543-6414-1975|NEVIN KOSHY|19-feb-09|19-feb-21                             
+8324-5657-7018-1073|NIRMAL GEORGE|16-may-11|16-may-23                           
+4205-6760-4412-1176|SAMPATH SIMON|11-aug-08|11-aug-20                           
+0083-7873-0214-1274|BIBIN TOM|29-nov-06|29-nov-18                               
+3347-8987-2410-1372|BINCY SAMUEL|20-oct-05|20-oct-17                            
+1629-9107-4412-1472|GRACE ALEX|08-aug-08|08-aug-20*/
+
+
+CREATE TABLE acct_details(ATM_No varchar(20),account_holder varchar(20),valid_from date,expiry_date date);
+INSERT INTO acct_details values ('4375-0107-2415-1578','JAMES MATHEW',date '2010-08-05',date '2022-08-05');
+INSERT INTO acct_details values ('3241-1217-2416-1670','THOMAS VARGHESE',date '2012-02-02',date '2024-09-02');
+INSERT INTO acct_details values ('4352-2327-4717-1773','TIJO SAMUEL',date '2007-12-21',date '2019-12-21');
+INSERT INTO acct_details values ('5532-3435-5316-1876','ALICE THOMAS',date '2013-01-17',date '2025-01-17');
+INSERT INTO acct_details values ('3652-4543-6414-1975','NEVIN KOSHY',date '2009-02-19',date '2021-02-19');
+INSERT INTO acct_details values ('8324-5657-7018-1073','NIRMAL GEORGE',date '2011-05-16',date '2023-05-16');
+INSERT INTO acct_details values ('4205-6760-4412-1176','SAMPATH SIMON',date '2008-08-11',date '2020-08-11');
+INSERT INTO acct_details values ('0083-7873-0214-1274','BIBIN TOM',date '2006-11-29',date '2018-11-29');
+INSERT INTO acct_details values ('3347-8987-2410-1372','BINCY SAMUEL',date '2005-10-20',date '2017-10-20');
+INSERT INTO acct_details values('1629-9107-4412-1472','GRACE ALEX',date '2008-08-08',date '2020-08-08');
+SELECT * FROM acct_details;
+/*
+ATM_NO	ACCOUNT_HOLDER	VALID_FROM	EXPIRY_DATE
+
+4375-0107-2415-1578	JAMES MATHEW	05-AUG-10	05-AUG-22
+3241-1217-2416-1670	THOMAS VARGHESE	02-FEB-12	02-SEP-24
+4352-2327-4717-1773	TIJO SAMUEL 	21-DEC-07	21-DEC-19
+5532-3435-5316-1876	ALICE THOMAS	17-JAN-13	17-JAN-25
+3652-4543-6414-1975	NEVIN KOSHY	    19-FEB-09	19-FEB-21
+8324-5657-7018-1073	NIRMAL GEORGE	16-MAY-11	16-MAY-23
+4205-6760-4412-1176	SAMPATH SIMON	11-AUG-08	11-AUG-20
+0083-7873-0214-1274	BIBIN TOM	    29-NOV-06	29-NOV-18
+3347-8987-2410-1372	BINCY SAMUEL	20-OCT-05	20-OCT-17
+1629-9107-4412-1472	GRACE ALEX   	08-AUG-08	08-AUG-20
+
+
+/QA/
+/Q1/
+SELECT ROUND(MONTHS_BETWEEN(sysdate,valid_from)) FROM acct_details WHERE account_holder='ALICE THOMAS';
+/*
+ROUND(MONTHS_BETWEEN(SYSDATE,VALID_FROM))
+95
+*/
+
+/Q2/
+SELECT account_holder FROM acct_details WHERE MONTHS_BETWEEN (expiry_date,sysdate) IN (select MAX (MONTHS_BETWEEN (Expiry_Date, sysdate))FROM acct_details);
+/*
+ACCOUNT_HOLDER
+ALICE THOMAS
+*/
+
+/Q3/
+SELECT MONTHS_BETWEEN(sysdate,valid_from)FROM acct_details WHERE account_holder='ALICE THOMAS';
+/*
+MONTHS_BETWEEN(SYSDATE,VALID_FROM)
+94.50881608422939068100358422939068100358
+*/
+
+/Q4/
+SELECT ROUND(MONTHS_BETWEEN(expiry_date,sysdate)*30) FROM acct_details WHERE account_holder='NIRMAL GEORGE';
+/*
+ROUND(MONTHS_BETWEEN(EXPIRY_DATE,SYSDATE)*30)
+884
+*/
+
+/Q5/
+UPDATE acct_details
+SET expiry_date=ADD_MONTHS(expiry_date,12)
+WHERE valid_from=date '2009-01-01';
+SELECT account_holder FROM acct_details WHERE valid_from=date '2009-01-01';
+
+/Q6/
+SELECT account_holder,sysdate, ROUND(MONTHS_BETWEEN (expiry_date,sysdate)*30) FROM acct_details;
+/*
+ACCOUNT_HOLDER	SYSDATE	ROUND(MONTHS_BETWEEN(EXPIRY_DATE,SYSDATE)*30)
+JAMES MATHEW	01-DEC-20	603
+THOMAS VARGHESE	01-DEC-20	1350
+TIJO SAMUEL	    01-DEC-20	-341
+ALICE THOMAS	01-DEC-20	1485
+NEVIN KOSHY	    01-DEC-20	77
+NIRMAL GEORGE	01-DEC-20	884
+SAMPATH SIMON	01-DEC-20	-111
+BIBIN TOM    	01-DEC-20	-724
+BINCY SAMUEL	01-DEC-20	-1122
+GRACE ALEX  	01-DEC-20	-114
+*/
+
+/Q7/
+SELECT account_holder FROM acct_details WHERE expiry_date IN(SELECT max(expiry_date) FROM acct_details);
+/*
+ACCOUNT_HOLDER
+ALICE THOMAS
+*/
+
+/Q8/
+UPDATE acct_details
+SET valid_from = valid_from +1  WHERE account_holder='GRACE ALEX';
+SELECT  * FROM acct_details;
+/*
+ATM_NO	ACCOUNT_HOLDER	VALID_FROM	EXPIRY_DATE
+4375-0107-2415-1578	JAMES MATHEW	05-AUG-10	05-AUG-22
+3241-1217-2416-1670	THOMAS VARGHESE	02-FEB-12	02-SEP-24
+4352-2327-4717-1773	TIJO SAMUEL 	21-DEC-07	21-DEC-19
+5532-3435-5316-1876	ALICE THOMAS	17-JAN-13	17-JAN-25
+3652-4543-6414-1975	NEVIN KOSHY	    19-FEB-09	19-FEB-21
+8324-5657-7018-1073	NIRMAL GEORGE	16-MAY-11	16-MAY-23
+4205-6760-4412-1176	SAMPATH SIMON	11-AUG-08	11-AUG-20
+0083-7873-0214-1274	BIBIN TOM	    29-NOV-06	29-NOV-18
+3347-8987-2410-1372	BINCY SAMUEL	20-OCT-05	20-OCT-17
+1629-9107-4412-1472	GRACE ALEX	    09-AUG-08	08-AUG-20
+*/
+
+/Q9/
+SELECT * FROM acct_details WHERE EXTRACT(year FROM valid_from)=EXTRACT(year FROM sysdate);
+/*
+no data found
+*/
+
+/Q10/
+SELECT ROUND((MONTHS_BETWEEN(sysdate,valid_from)/12)+18) AS age FROM acct_details WHERE account_holder='BINCY SAMUEL';
+/*
+AGE
+33
+*/
+
+/Q11/
+SELECT account_holder,EXTRACT(year FROM expiry_date) AS expiry_year FROM acct_details;
+/*
+ACCOUNT_HOLDER	EXPIRY_YEAR
+JAMES MATHEW	2022
+THOMAS VARGHESE	2024
+TIJO SAMUEL 	2019
+ALICE THOMAS	2025
+NEVIN KOSHY	    2021
+NIRMAL GEORGE	2023
+SAMPATH SIMON	2020
+BIBIN TOM   	2018
+BINCY SAMUEL	2017
+GRACE ALEX  	2020
+*/
+
+/Q12/
+SELECT TO_CHAR(SYSTIMESTAMP, 'HH:MM:SS:AM') AS present_time FROM dual; 
+/*
+PRESENT_TIME
+07:12:53:PM
+*/
+
+
+
+/QB/
+CREATE TABLE angle (angle int primary key ,sin decimal(4,2), cos decimal(4,2), tan decimal(4,2), cot decimal(4,2), sec decimal(4,2));
+INSERT into angle (angle) values(0);
+INSERT into angle (angle) values(30);
+INSERT into angle (angle) values(45);
+INSERT into angle (angle) values(60);
+INSERT into angle (angle) values(90);
+SELECT * FROM angle;
+/*
+ANGLE	SIN	COS	TAN	COT	SEC
+0	     - 	 - 	 - 	 - 	 - 
+30	     - 	 - 	 - 	 - 	 - 
+45	     - 	 - 	 - 	 - 	 - 
+60	     - 	 - 	 - 	 - 	 - 
+90	     - 	 - 	 - 	 - 	 - 
+*/
+
+UPDATE angle SET sin=sin(angle*(3.14/180));
+UPDATE angle SET cos=cos(angle*(3.14/180));
+UPDATE angle SET tan=tan(angle*(3.14/180)) where angle<90;
+UPDATE angle SET cot=(cos/sin) where angle>0;
+UPDATE angle SET sec=(1/cos) where angle<90;
+SELECT * from angle;
+/*
+ANGLE	SIN	COS	TAN	COT	SEC
+0	     0	1	0	 - 	  1
+30	    .5	.87	.58	 1.74 1.15
+45  	.71	.71	1	 1	  1.41
+60	    .87	.5	1.73 .57  2
+90	    1	0	- 	 0	  - 
+*/
+
+/Q1/
+SELECT TO_CHAR(SYSDATE,'HH:MM:SS AM') FROM angle OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY;
+/*
+TO_CHAR(SYSDATE,'HH:MM:SSAM')
+08:12:58 PM
+*/
+
+/Q2/
+SELECT to_char(sysdate,'dd/mm/yy')
+FROM angle OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY;
+/*
+TO_CHAR(SYSDATE,'DD/MM/YY')
+01/12/20
+*/
+
+/Q3/
+SELECT CEIL(8.29) AS ceil FROM angle OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY;
+/*
+CEIL
+9
+*/
+
+/Q4/
+SELECT FLOOR(9.76) AS floor FROM angle OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY;
+/*
+FLOOR
+9
+*/
+
+/Q5/
+SELECT LAST_DAY( date '2014-09-12') AS LAST_DAY FROM angle OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY ;
+/*
+LAST_DAY
+30-SEP-14
+*/
+
+/Q6/
+SELECT SQRT(100) "Square root" FROM angle OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY;
+/*
+Square root
+10
+*/
+
+/Q7/
+SELECT GREATEST ('HARRY', 'HARRIOT', 'HAROLD') FROM angle OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY;
+/*
+GREATEST('HARRY','HARRIOT','HAROLD')
+HARRY
+*/
+
+SELECT least('HARRY', 'HARRIOT', 'HAROLD') FROM angle OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY;
+/*
+LEAST('HARRY','HARRIOT','HAROLD')
+HAROLD
+*/
